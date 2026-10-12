@@ -1,0 +1,22 @@
+# Dependencies and generated build output
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Local configuration and secrets
+.env*
+!.env.example
+
+# Test and tool output
+test-results/
+playwright-report/
+*.log
+npm-debug.log*
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
