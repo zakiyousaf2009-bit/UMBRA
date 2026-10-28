@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
+import { Analytics } from '@vercel/analytics/react'
 import { Logo } from './brand/Logo.jsx'
 import Drawer from './drawers/Drawer.jsx'
 import Popup from './components/Popup.jsx'
@@ -221,6 +222,7 @@ export default function App() {
     {drawer&&<Drawer name={drawer} onClose={closeDrawer} onNotify={tell}/>}
     <Popup onConfirmClear={confirmClear} onRetry={convertAll}/>
     {installPrompt&&<button className="install-prompt" onClick={()=>{installPrompt.prompt();setInstallPrompt(null)}}>Install UMBRA</button>}
+    <Analytics />
   </div>
 }
 
@@ -422,4 +424,3 @@ async function decodeFilePixels(file) {
     if (objectUrl) URL.revokeObjectURL(objectUrl)
   }
 }
-
