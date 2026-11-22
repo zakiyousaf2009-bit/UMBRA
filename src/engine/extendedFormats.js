@@ -129,8 +129,8 @@ export function encodeTga({data,width,height}) {
 export function decodeTga(bytes) {
   if(bytes.length<18)throw new Error('decode-failed')
   const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength),idLength=bytes[0],colorMap=bytes[1],kind=bytes[2],width=view.getUint16(12,true),height=view.getUint16(14,true),depth=bytes[16]
-  dimensions(width,height)
   if(colorMap!==0||![2,3].includes(kind)||!(kind===2&&[24,32].includes(depth)||kind===3&&depth===8))throw Object.assign(new Error('unsupported-format'),{cause:'Only uncompressed grayscale and true-color TGA images are supported.'})
+  dimensions(width,height)
   const channels=depth/8,start=18+idLength,count=width*height
   if(bytes.length<start+count*channels)throw new Error('decode-failed')
   const top=Boolean(bytes[17]&0x20),right=Boolean(bytes[17]&0x10),data=new Uint8ClampedArray(count*4)

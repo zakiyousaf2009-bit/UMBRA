@@ -3,9 +3,11 @@ import { ArrowRight } from 'lucide-react'
 import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { Analytics } from '@vercel/analytics/react'
+import { zipSync } from 'fflate'
 import { Logo } from './brand/Logo.jsx'
 import Drawer from './drawers/Drawer.jsx'
 import Popup from './components/Popup.jsx'
+import FaqSection from './sections/FaqSection.jsx'
 import HomeSection from './sections/HomeSection.jsx'
 import WorkspaceSection from './sections/WorkspaceSection.jsx'
 import { detectFormat } from './engine/detect.js'
@@ -217,8 +219,9 @@ export default function App() {
     <header className="site-nav"><a href="#convert" className="logo-link" onClick={event=>{event.preventDefault();jumpTo('convert')}}><Logo/></a><div className="nav-actions"><span className="offline-pill"><i className="live-dot"/>Private · local only</span></div></header>
     <main>
       <section className="converter-section" id="convert"><div className="converter-intro"><h1>Convert images.<br/><span>Keep them private.</span></h1><p>Local image conversion. No uploads. No file history.</p></div><HomeSection onFiles={addImages}/><WorkspaceSection onConvert={convertAll} onError={showError} preparingHeif={preparingHeif} paused={paused} onPause={togglePause} onCancel={cancelConversion} verifiedEncoders={verifiedEncoders} capabilitiesReady={capabilitiesReady}/></section>
+      <FaqSection />
     </main>
-    <footer className="site-footer"><a href="#convert" className="footer-brand" onClick={event=>{event.preventDefault();jumpTo('convert')}}><Logo/></a><p>Convert anything. Leave no trace.</p><div className="footer-links"><button onClick={()=>openDrawer('privacy-policy')}>Privacy</button><button onClick={()=>openDrawer('licenses')}>Licenses</button><button onClick={()=>openDrawer('help')}>Help</button><a href="https://github.com/zakiyousaf2009-bit/UMBRA" target="_blank" rel="noopener noreferrer">GitHub</a></div><div className="footer-base"><span><i className="live-dot"/> {offlineReady?'Offline ready':'Works offline after first visit'}</span><small>UMBRA · 0.2.0</small><small className="designer-credit">Designed and developed by Zaki Yousaf</small></div></footer>
+    <footer className="site-footer"><a href="#convert" className="footer-brand" onClick={event=>{event.preventDefault();jumpTo('convert')}}><Logo/></a><p>Convert anything. Leave no trace.</p><div className="footer-links"><a href="/privacy/">Privacy</a><a href="/licenses/">Licenses</a><a href="/help/">Help</a><a href="https://github.com/zakiyousaf2009-bit/UMBRA" target="_blank" rel="noopener noreferrer">GitHub</a></div><div className="footer-base"><span><i className="live-dot"/> {offlineReady?'Offline ready':'Works offline after first visit'}</span><small>UMBRA · 0.2.1</small><small className="designer-credit">Designed and developed by Zaki Yousaf</small></div></footer>
     {drawer&&<Drawer name={drawer} onClose={closeDrawer} onNotify={tell}/>}
     <Popup onConfirmClear={confirmClear} onRetry={convertAll}/>
     {installPrompt&&<button className="install-prompt" onClick={()=>{installPrompt.prompt();setInstallPrompt(null)}}>Install UMBRA</button>}
@@ -377,7 +380,6 @@ function runWorkerStartupCheck() {
 
 async function runUtilityDiagnostics() {
   try {
-    const { zipSync } = await import('fflate')
     const bytes = zipSync({ 'umbra-diagnostic.txt':new TextEncoder().encode('ok') })
     return [{component:'ZIP creation',ok:bytes.length>0,detail:bytes.length>0?`Created a ${bytes.length}-byte in-memory ZIP.`:'ZIP encoder returned an empty result.'}]
   } catch (error) { return [{component:'ZIP creation',ok:false,detail:error?.stack||error?.message||String(error)}] }
