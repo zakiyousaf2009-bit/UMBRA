@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { zipSync } from 'fflate'
 import { Logo } from './brand/Logo.jsx'
 import Drawer from './drawers/Drawer.jsx'
@@ -226,6 +227,7 @@ export default function App() {
     <Popup onConfirmClear={confirmClear} onRetry={convertAll}/>
     {installPrompt&&<button className="install-prompt" onClick={()=>{installPrompt.prompt();setInstallPrompt(null)}}>Install UMBRA</button>}
     <Analytics />
+    <SpeedInsights />
   </div>
 }
 
